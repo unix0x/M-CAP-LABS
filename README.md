@@ -1,6 +1,6 @@
 <div align="center">
   <img 
-    width="1200" 
+    width="320" 
     alt="M-Cap Labs Banner – Iconic Pixel M Cap" 
     src="https://raw.githubusercontent.com/unix0x/M-CAP-LABS/main/public/m-cap-banner-2.png" 
   />
