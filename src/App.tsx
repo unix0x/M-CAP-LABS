@@ -342,7 +342,6 @@ export default function App() {
       noiseMode: 'chrome',
       visible: true,
       opacity: 1,
-      draggable: true,  
       isLocked: false,
       isSelected: true,
     };
@@ -1034,9 +1033,11 @@ export default function App() {
         const canvas = canvasRef.current!;
         const ctx = canvas.getContext('2d')!;
         ctx.font = `bold ${layer.fontSize}px sans-serif`;
-        const metrics = ctx.measureText(layer.text);
-        w = (metrics.width + 40) * layer.scale;
-        h = (layer.fontSize + 40) * layer.scale;
+        const lines = layer.text.split('\n');
+        const maxLineWidth = Math.max(...lines.map(line => ctx.measureText(line).width));
+        const lineHeight = layer.fontSize * 1.2;
+        w = (maxLineWidth + 40) * layer.scale;
+        h = (lines.length * lineHeight + 40) * layer.scale;
       } else {
         const size = 1024;
         w = size * layer.scale;
@@ -1107,9 +1108,11 @@ export default function App() {
         const canvas = canvasRef.current!;
         const ctx = canvas.getContext('2d')!;
         ctx.font = `bold ${layer.fontSize}px sans-serif`;
-        const metrics = ctx.measureText(layer.text);
-        const w = (metrics.width + 40) * layer.scale;
-        const h = (layer.fontSize + 40) * layer.scale;
+        const lines = layer.text.split('\n');
+        const maxLineWidth = Math.max(...lines.map(line => ctx.measureText(line).width));
+        const lineHeight = layer.fontSize * 1.2;
+        const w = (maxLineWidth + 40) * layer.scale;
+        const h = (lines.length * lineHeight + 40) * layer.scale;
         
         const dx = mouseX - layer.x;
         const dy = mouseY - layer.y;
@@ -1134,11 +1137,9 @@ export default function App() {
 
     if (foundIdx !== -1) {
       setActiveLayerIdx(foundIdx);
-      if (mode === 'memes') {
-        setIsDragging(true);
-        setInteractionMode('drag');
-        setDragOffset({ x: mouseX - layers[foundIdx].x, y: mouseY - layers[foundIdx].y });
-      }
+      setIsDragging(true);
+      setInteractionMode('drag');
+      setDragOffset({ x: mouseX - layers[foundIdx].x, y: mouseY - layers[foundIdx].y });
     } else {
       setActiveLayerIdx(null);
       setInteractionMode(null);
