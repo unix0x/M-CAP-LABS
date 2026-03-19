@@ -1218,14 +1218,14 @@ export default function App() {
           <div className="flex items-center gap-3 mt-1">
             <button 
               onClick={() => setMode('labs')}
-              className={`text-[6px] tracking-widest uppercase transition-all ${mode === 'labs' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
+              className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'labs' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
             >
               CAP ENGINE
             </button>
             <div className={`h-2 w-[1px] ${isLightMode ? 'bg-black/10' : 'bg-white/10'}`} />
             <button 
               onClick={() => setMode('memes')}
-              className={`text-[6px] tracking-widest uppercase transition-all ${mode === 'memes' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
+              className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'memes' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
             >
               MEME ENGINE
             </button>
@@ -1889,48 +1889,52 @@ export default function App() {
             <div className={`absolute inset-0 blur-[100px] rounded-full pointer-events-none ${isLightMode ? 'bg-black/5' : 'bg-neon-green/5'}`} />
             
             {/* Mobile Vertical Toolbar (Left) */}
-            <div className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
-              {mode === 'memes' && (
+            {!(mode === 'memes' && !memeImage) && (
+              <div className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
+                {mode === 'memes' && (
+                  <button 
+                    onClick={addCap}
+                    className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-[#A855F7] border-[#A855F7]/20'}`}
+                  >
+                    <ImageIcon size={18} />
+                  </button>
+                )}
                 <button 
-                  onClick={addCap}
-                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-[#A855F7] border-[#A855F7]/20'}`}
+                  onClick={addTextLayer}
+                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
                 >
-                  <ImageIcon size={18} />
+                  <Type size={18} />
                 </button>
-              )}
-              <button 
-                onClick={addTextLayer}
-                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
-              >
-                <Type size={18} />
-              </button>
-              <button 
-                onClick={applyTheme}
-                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
-              >
-                <span className="w-4 h-4 flex items-center justify-center text-[10px] font-black leading-none">{THEMES[currentThemeIdx].name.charAt(0)}</span>
-              </button>
-              <button 
-                onClick={() => setMaxNoiseEnabled(!maxNoiseEnabled)}
-                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${maxNoiseEnabled ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
-              >
-                <Activity size={18} />
-              </button>
-              <button 
-                onClick={() => setRandomizePalettes(!randomizePalettes)}
-                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${randomizePalettes ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
-              >
-                <Palette size={18} />
-              </button>
-            </div>
+                <button 
+                  onClick={applyTheme}
+                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
+                >
+                  <span className="w-4 h-4 flex items-center justify-center text-[10px] font-black leading-none">{THEMES[currentThemeIdx].name.charAt(0)}</span>
+                </button>
+                <button 
+                  onClick={() => setMaxNoiseEnabled(!maxNoiseEnabled)}
+                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${maxNoiseEnabled ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
+                >
+                  <Activity size={18} />
+                </button>
+                <button 
+                  onClick={() => setRandomizePalettes(!randomizePalettes)}
+                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${randomizePalettes ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
+                >
+                  <Palette size={18} />
+                </button>
+              </div>
+            )}
 
             {/* Mobile Randomizer (Right) */}
-            <button 
-              onClick={randomizeAll}
-              className={`lg:hidden absolute right-2 bottom-4 p-2.5 rounded-full shadow-2xl z-30 transition-all active:scale-95 ${isLightMode ? 'bg-black text-white' : 'bg-neon-green text-black'}`}
-            >
-              <Recycle size={18} />
-            </button>
+            {!(mode === 'memes' && !memeImage) && (
+              <button 
+                onClick={randomizeAll}
+                className={`lg:hidden absolute right-2 bottom-4 p-2.5 rounded-full shadow-2xl z-30 transition-all active:scale-95 ${isLightMode ? 'bg-black text-white' : 'bg-neon-green text-black'}`}
+              >
+                <Recycle size={18} />
+              </button>
+            )}
 
             <canvas
               ref={canvasRef}
@@ -1994,7 +1998,7 @@ export default function App() {
             )}
 
             {mode === 'memes' && !memeImage && (
-              <div className={`w-full max-w-[340px] lg:w-[512px] aspect-square flex flex-col items-center justify-center border-2 border-dashed rounded-2xl transition-all ${isLightMode ? 'border-black/10 bg-black/5 hover:bg-black/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+              <div className={`w-full max-w-[340px] lg:w-[512px] aspect-square flex flex-col items-center justify-center border-2 border-dashed rounded-2xl transition-all ${isLightMode ? 'bg-black lg:bg-black/5 border-black/10 hover:bg-black/10' : 'bg-black lg:bg-white/5 border-white/10 hover:bg-white/10'}`}>
                 <input 
                   type="file" 
                   id="meme-upload" 
@@ -2006,24 +2010,26 @@ export default function App() {
                   htmlFor="meme-upload" 
                   className="flex flex-col items-center gap-4 cursor-pointer group"
                 >
-                  <div className={`p-6 rounded-full transition-all ${isLightMode ? 'bg-black/5 group-hover:bg-black/10' : 'bg-white/5 group-hover:bg-white/10'}`}>
-                    <Upload size={32} className={isLightMode ? 'text-black' : 'text-neon-green'} />
+                  <div className={`p-6 rounded-full transition-all ${isLightMode ? 'bg-white/10 group-hover:bg-white/20' : 'bg-white/5 group-hover:bg-white/10'}`}>
+                    <Upload size={32} className={isLightMode ? 'text-white' : 'text-neon-green'} />
                   </div>
                   <div className="flex flex-col items-center">
-                    <span className="text-[12px] font-black tracking-widest uppercase">Upload Meme</span>
-                    <span className={`text-[8px] tracking-widest mt-1 ${isLightMode ? 'text-black/40' : 'text-white/40'}`}>AUTO-CAP ENGINE READY</span>
+                    <span className={`text-[12px] font-black tracking-widest uppercase ${isLightMode ? 'text-white' : 'text-white'}`}>Upload Meme</span>
+                    <span className={`text-[8px] tracking-widest mt-1 ${isLightMode ? 'text-white/60' : 'text-white/40'}`}>AUTO-CAP ENGINE READY</span>
                   </div>
                 </label>
               </div>
             )}
             
             {/* Minimal Play/Stop Button Overlay */}
-            <button 
-              onClick={() => setIsAnimating(!isAnimating)}
-              className={`absolute bottom-8 right-8 p-3 rounded-full backdrop-blur-md border hover:bg-neon-green hover:text-black transition-all group-hover:scale-110 ${isLightMode ? 'bg-white/60 text-black border-black/10' : 'bg-black/60 text-neon-green border-white/10'}`}
-            >
-              {isAnimating ? <Pause size={14} /> : <Play size={14} />}
-            </button>
+            {!(mode === 'memes' && !memeImage) && (
+              <button 
+                onClick={() => setIsAnimating(!isAnimating)}
+                className={`absolute bottom-8 right-8 p-3 rounded-full backdrop-blur-md border hover:bg-neon-green hover:text-black transition-all group-hover:scale-110 ${isLightMode ? 'bg-white/60 text-black border-black/10' : 'bg-black/60 text-neon-green border-white/10'}`}
+              >
+                {isAnimating ? <Pause size={14} /> : <Play size={14} />}
+              </button>
+            )}
 
             {mode === 'memes' && memeImage && (
               <button 
