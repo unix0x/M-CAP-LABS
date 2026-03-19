@@ -342,6 +342,7 @@ export default function App() {
       noiseMode: 'chrome',
       visible: true,
       opacity: 1,
+      draggable={true}  
       isLocked: false,
       isSelected: true,
     };
