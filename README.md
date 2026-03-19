@@ -2,7 +2,7 @@
   <img 
     width="1200" 
     alt="M-Cap Labs Banner – Iconic Pixel M Cap" 
-    src="https://raw.githubusercontent.com/unix0x/M-CAP-LABS/main/public/m-cap-banner.png" 
+    src="https://raw.githubusercontent.com/unix0x/M-CAP-LABS/main/public/m-cap-banner-2.png" 
   />
 </div>
 
