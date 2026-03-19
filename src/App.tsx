@@ -651,36 +651,33 @@ export default function App() {
       const palette = getCapPalette();
       const baseId = `meme-cap-${Date.now()}-${i}`;
       
-          // Add the 3 layers for this cap
-          [2, 1, 0].forEach((presetIdx, paletteIdx) => {
-            newLayers.push({
-              id: `${baseId}-${presetIdx}`,
-              groupId: baseId,
-              name: `${LAYER_NAMES[presetIdx]} ${i + 1}`,
-              type: 'image',
-              url: PRESET_IMAGES[presetIdx],
-              text: '',
-              fontSize: 160,
-              scale: (faceWidthOnCanvas / 1024) * 1.1, // Reduced scale as requested
-              rotation: angle, 
-              x: centerX,
-              y: centerY,
-              color: palette[paletteIdx % palette.length],
-              hue: 0,
-              noise: 0.15,
-              noiseMode: 'chrome',
-              visible: true,
-              opacity: 1,
-              isLocked: false,
-              isSelected: true,
-            });
-          });
+      // Add the 3 layers for this cap
+      [2, 1, 0].forEach((presetIdx, paletteIdx) => {
+        newLayers.push({
+          id: `${baseId}-${presetIdx}`,
+          groupId: baseId,
+          name: `${LAYER_NAMES[presetIdx]} ${i + 1}`,
+          type: 'image',
+          url: PRESET_IMAGES[presetIdx],
+          text: '',
+          fontSize: 160,
+          scale: (faceWidthOnCanvas / 1024) * 1.1, // Reduced scale as requested
+          rotation: angle, 
+          x: centerX,
+          y: centerY,
+          color: palette[paletteIdx % palette.length],
+          hue: 0,
+          noise: 0.15,
+          noiseMode: 'chrome',
+          visible: true,
+          opacity: 1,
+          isLocked: false,
+          isSelected: true,
+        });
+      });
     });
 
-    if (newLayers.length === 0 && window.innerWidth >= 1024) {
-    
-    }
-
+    // Removed the alert - silent fail when no faces detected
     setLayers(newLayers);
     setIsProcessingFaces(false);
   };
@@ -1756,9 +1753,7 @@ export default function App() {
                           
                           if (detections.length === 0) {
                             setIsProcessingFaces(false);
-                            if (window.innerWidth >= 1024) {
-                              alert("No faces detected. Try placing manually!");
-                            }
+                            // Removed alert - silent fail
                             return;
                           }
 
