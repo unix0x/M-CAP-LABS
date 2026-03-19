@@ -1756,7 +1756,7 @@ export default function App() {
                           
                           if (detections.length === 0) {
                             setIsProcessingFaces(false);
-                            alert("No faces detected. Try placing manually!");
+                          
                             return;
                           }
 
