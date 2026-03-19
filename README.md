@@ -51,20 +51,3 @@ Perfect for creating hilarious Fast Food Punks-style memes, profile pics, or jus
 Fork, remix, make memes – enjoy! 🍔🧢
 
 Made with ❤️ in 2026
-
-# Run and deploy your AI Studio app
-
-This contains everything you need to run your app locally.
-
-View your app in AI Studio: https://ai.studio/apps/9a95dfe4-1ba7-4eb5-ae5e-a00f1cdac1d6
-
-## Run Locally
-
-**Prerequisites:**  Node.js
-
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
