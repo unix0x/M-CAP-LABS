@@ -678,7 +678,7 @@ export default function App() {
     });
 
     if (newLayers.length === 0) {
-      alert("No faces detected. Try another image or place caps manually!");
+      ;
     }
 
     setLayers(newLayers);
