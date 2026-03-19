@@ -1549,7 +1549,7 @@ export default function App() {
                             <div key={l.id} className="flex flex-col items-center gap-1">
                               <input 
                                 type="color" 
-                                value={l.color}
+                                value={l.color || '#000000'}
                                 onChange={(e) => {
                                   const idx = layers.findIndex(layer => layer.id === l.id);
                                   updateLayer(idx, { color: e.target.value });
@@ -1593,7 +1593,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <input 
                     type="checkbox" 
-                    checked={layer.isSelected}
+                    checked={layer.isSelected || false}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => updateLayer(idx, { isSelected: e.target.checked })}
                     className="w-3 h-3 accent-neon-green"
@@ -1658,7 +1658,7 @@ export default function App() {
                       <div className="space-y-2">
                         <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Text Content</span>
                         <textarea 
-                          value={layer.text}
+                          value={layer.text || ''}
                           onChange={(e) => updateLayer(idx, { text: e.target.value })}
                           className={`w-full border rounded px-2 py-1 text-[10px] focus:outline-none focus:border-neon-green resize-none min-h-[60px] ${isLightMode ? 'bg-black/5 border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
                           placeholder="Enter text... (Shift+Enter for new line)"
@@ -1677,7 +1677,7 @@ export default function App() {
                     <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Color</span>
                     <input 
                       type="color" 
-                      value={layer.color}
+                      value={layer.color || '#000000'}
                       onChange={(e) => updateLayer(idx, { color: e.target.value })}
                       className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                     />
@@ -1729,7 +1729,7 @@ export default function App() {
               {bgEnabled && (
                 <input 
                   type="color" 
-                  value={bgColor}
+                  value={bgColor || '#333333'}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                 />
@@ -2112,7 +2112,7 @@ function CompactSlider({ label, value, min, max, step = 0.1, onChange, isLightMo
     <div className="flex items-center gap-4">
       <span className={`text-[7px] w-8 tracking-widest ${isLightMode ? 'text-black' : 'text-white/10'}`}>{label}</span>
       <input 
-        type="range" min={min} max={max} step={step} value={value}
+        type="range" min={min} max={max} step={step} value={value ?? 0}
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className="flex-1"
       />
