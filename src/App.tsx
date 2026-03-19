@@ -677,7 +677,7 @@ export default function App() {
           });
     });
 
-    if (newLayers.length === 0) {
+    if (newLayers.length === 0 && window.innerWidth >= 1024) {
       alert("No faces detected. Try another image or place caps manually!");
     }
 
@@ -1756,7 +1756,9 @@ export default function App() {
                           
                           if (detections.length === 0) {
                             setIsProcessingFaces(false);
-                          
+                            if (window.innerWidth >= 1024) {
+                              alert("No faces detected. Try placing manually!");
+                            }
                             return;
                           }
 
