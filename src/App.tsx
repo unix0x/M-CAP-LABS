@@ -678,7 +678,7 @@ export default function App() {
     });
 
     if (newLayers.length === 0) {
-      ;
+      alert("No faces detected. Try another image or place caps manually!");
     }
 
     setLayers(newLayers);
@@ -1212,7 +1212,7 @@ export default function App() {
       {/* Header Bar */}
       <div className={`w-full max-w-6xl mt-8 flex items-center justify-between backdrop-blur-md px-8 py-4 rounded-2xl border ${isLightMode ? 'bg-white/80 border-black/5' : 'bg-black/40 border-white/5'}`}>
         <div className="flex flex-col">
-          <h1 className={`text-[14px] font-black tracking-[0.4em] uppercase transition-all duration-300 ${isLightMode ? 'text-black' : 'text-neon-green'}`}>
+          <h1 className={`text-[12px] lg:text-[14px] font-black tracking-[0.4em] uppercase transition-all duration-300 ${isLightMode ? 'text-black' : 'text-neon-green'}`}>
             M CAP LABS
           </h1>
           <div className="flex items-center gap-3 mt-1">
@@ -1232,7 +1232,8 @@ export default function App() {
           </div>
         </div>
         
-        <div className="flex items-center gap-2">
+        {/* Desktop Controls */}
+        <div className="hidden lg:flex items-center gap-2">
           {mode === 'memes' && (
             <button 
               onClick={addCap}
@@ -1299,10 +1300,26 @@ export default function App() {
             <Sparkles size={16} />
           </button>
         </div>
+
+        {/* Mobile Quick Actions */}
+        <div className="lg:hidden flex items-center gap-2">
+          <button 
+            onClick={() => setIsLightMode(!isLightMode)}
+            className={`p-2 rounded-full transition-all border ${isLightMode ? 'bg-black/5 text-black border-black/10' : 'bg-white/5 text-neon-green border-neon-green/20'}`}
+          >
+            {isLightMode ? <Moon size={14} /> : <Sun size={14} />}
+          </button>
+          <button 
+            onClick={() => downloadImage(1)} 
+            className={`p-2 rounded-lg transition-all border ${isLightMode ? 'bg-black text-white border-black' : 'bg-white text-black border-white'}`}
+          >
+            <FileDown size={14} />
+          </button>
+        </div>
       </div>
 
       {/* Main Layout */}
-      <main className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 p-8">
+      <main className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 p-4 lg:p-8">
         
         {/* Left: Controls Area */}
         <div className="lg:col-span-5 space-y-4 overflow-y-auto max-h-[70vh] pr-2 custom-scrollbar order-2 lg:order-1">
@@ -1870,6 +1887,51 @@ export default function App() {
         <div className="lg:col-span-7 flex flex-col items-center order-1 lg:order-2">
           <div className={`relative group p-4 rounded-3xl border backdrop-blur-sm ${isLightMode ? 'bg-white/40 border-black/5' : 'bg-black/40 border-white/5'}`}>
             <div className={`absolute inset-0 blur-[100px] rounded-full pointer-events-none ${isLightMode ? 'bg-black/5' : 'bg-neon-green/5'}`} />
+            
+            {/* Mobile Vertical Toolbar (Left) */}
+            <div className="lg:hidden absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-3 z-30">
+              {mode === 'memes' && (
+                <button 
+                  onClick={addCap}
+                  className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-[#A855F7] border-[#A855F7]/20'}`}
+                >
+                  <ImageIcon size={18} />
+                </button>
+              )}
+              <button 
+                onClick={addTextLayer}
+                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
+              >
+                <Type size={18} />
+              </button>
+              <button 
+                onClick={applyTheme}
+                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${isLightMode ? 'bg-white/80 text-black border-black/10' : 'bg-black/80 text-neon-green border-neon-green/20'}`}
+              >
+                <span className="w-4 h-4 flex items-center justify-center text-[10px] font-black leading-none">{THEMES[currentThemeIdx].name.charAt(0)}</span>
+              </button>
+              <button 
+                onClick={() => setMaxNoiseEnabled(!maxNoiseEnabled)}
+                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${maxNoiseEnabled ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
+              >
+                <Activity size={18} />
+              </button>
+              <button 
+                onClick={() => setRandomizePalettes(!randomizePalettes)}
+                className={`p-3 rounded-full shadow-lg border backdrop-blur-md ${randomizePalettes ? (isLightMode ? 'bg-black text-white border-black' : 'bg-neon-green/20 text-neon-green border-neon-green/40') : (isLightMode ? 'bg-white/80 text-black/40 border-black/10' : 'bg-black/80 text-white/40 border-white/10')}`}
+              >
+                <Palette size={18} />
+              </button>
+            </div>
+
+            {/* Mobile Randomizer (Right) */}
+            <button 
+              onClick={randomizeAll}
+              className={`lg:hidden absolute right-2 bottom-4 p-2.5 rounded-full shadow-2xl z-30 transition-all active:scale-95 ${isLightMode ? 'bg-black text-white' : 'bg-neon-green text-black'}`}
+            >
+              <Recycle size={18} />
+            </button>
+
             <canvas
               ref={canvasRef}
               width={1024}
@@ -1879,7 +1941,7 @@ export default function App() {
               onMouseUp={handleCanvasMouseUp}
               onMouseLeave={handleCanvasMouseUp}
               onWheel={handleCanvasWheel}
-              className={`w-full max-w-[512px] aspect-square transition-all duration-500 group-hover:shadow-[0_0_50px_rgba(57,255,20,0.1)] ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'} ${mode === 'memes' && !memeImage ? 'hidden' : 'block'}`}
+              className={`w-full max-w-[340px] lg:max-w-[512px] aspect-square transition-all duration-500 group-hover:shadow-[0_0_50px_rgba(57,255,20,0.1)] ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'} ${mode === 'memes' && !memeImage ? 'hidden' : 'block'}`}
             />
 
             {/* In-canvas controls for active layer (Cap only) */}
@@ -1932,7 +1994,7 @@ export default function App() {
             )}
 
             {mode === 'memes' && !memeImage && (
-              <div className={`w-[512px] aspect-square flex flex-col items-center justify-center border-2 border-dashed rounded-2xl transition-all ${isLightMode ? 'border-black/10 bg-black/5 hover:bg-black/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
+              <div className={`w-full max-w-[340px] lg:w-[512px] aspect-square flex flex-col items-center justify-center border-2 border-dashed rounded-2xl transition-all ${isLightMode ? 'border-black/10 bg-black/5 hover:bg-black/10' : 'border-white/10 bg-white/5 hover:bg-white/10'}`}>
                 <input 
                   type="file" 
                   id="meme-upload" 
@@ -2013,7 +2075,7 @@ export default function App() {
             )}
           </div>
           
-          <div className="mt-8 flex flex-col gap-4 w-full max-w-[512px]">
+          <div className="mt-8 flex flex-col gap-4 w-full max-w-[512px] hidden lg:flex">
             <div className="flex items-center gap-4">
               <div className="w-2 h-2 bg-neon-green rounded-full animate-pulse shadow-[0_0_10px_#39FF14]" />
               <div className={`text-[9px] font-bold uppercase tracking-[0.4em] ${isLightMode ? 'text-black' : 'text-white/20'}`}>
