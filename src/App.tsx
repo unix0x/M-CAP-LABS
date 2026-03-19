@@ -180,7 +180,7 @@ export default function App() {
   const [bgEnabled, setBgEnabled] = useState(false);
   const [bgColor, setBgColor] = useState('#333333'); // Default Dark Grey
   const [maxNoiseEnabled, setMaxNoiseEnabled] = useState(false);
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(true);
   const [randomizePalettes, setRandomizePalettes] = useState(false);
   const [mode, setMode] = useState<'labs' | 'memes'>('labs');
   const labsLayersRef = useRef<LayerState[]>([]);
