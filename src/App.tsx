@@ -1209,24 +1209,32 @@ export default function App() {
       
       {/* Header Bar */}
       <div className={`w-full max-w-6xl mt-8 flex items-center justify-between backdrop-blur-md px-8 py-4 rounded-2xl border ${isLightMode ? 'bg-white/80 border-black/5' : 'bg-black/40 border-white/5'}`}>
-        <div className="flex flex-col">
-          <h1 className={`text-[12px] lg:text-[14px] font-black tracking-[0.4em] uppercase transition-all duration-300 ${isLightMode ? 'text-black' : 'text-neon-green'}`}>
-            M CAP LABS
-          </h1>
-          <div className="flex items-center gap-3 mt-1">
-            <button 
-              onClick={() => setMode('labs')}
-              className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'labs' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
-            >
-              CAP ENGINE
-            </button>
-            <div className={`h-2 w-[1px] ${isLightMode ? 'bg-black/10' : 'bg-white/10'}`} />
-            <button 
-              onClick={() => setMode('memes')}
-              className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'memes' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
-            >
-              MEME ENGINE
-            </button>
+        <div className="flex items-center gap-4">
+          <img 
+            src="https://raw.githubusercontent.com/unix0x/M-CAP-LABS/main/public/m-cap-banner-2.png" 
+            alt="M Cap Logo" 
+            className="w-10 h-10 object-contain"
+            referrerPolicy="no-referrer"
+          />
+          <div className="flex flex-col">
+            <h1 className={`text-[12px] lg:text-[14px] font-black tracking-[0.4em] uppercase transition-all duration-300 ${isLightMode ? 'text-black' : 'text-neon-green'}`}>
+              M CAP LABS
+            </h1>
+            <div className="flex items-center gap-3 mt-1">
+              <button 
+                onClick={() => setMode('labs')}
+                className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'labs' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
+              >
+                CAP ENGINE
+              </button>
+              <div className={`h-2 w-[1px] ${isLightMode ? 'bg-black/10' : 'bg-white/10'}`} />
+              <button 
+                onClick={() => setMode('memes')}
+                className={`text-[8px] lg:text-[6px] tracking-widest uppercase transition-all ${mode === 'memes' ? (isLightMode ? 'text-black opacity-100' : 'text-white opacity-100') : (isLightMode ? 'text-black/40' : 'text-white/20')}`}
+              >
+                MEME ENGINE
+              </button>
+            </div>
           </div>
         </div>
         
@@ -1549,7 +1557,7 @@ export default function App() {
                             <div key={l.id} className="flex flex-col items-center gap-1">
                               <input 
                                 type="color" 
-                                value={l.color || '#000000'}
+                                value={l.color}
                                 onChange={(e) => {
                                   const idx = layers.findIndex(layer => layer.id === l.id);
                                   updateLayer(idx, { color: e.target.value });
@@ -1593,7 +1601,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <input 
                     type="checkbox" 
-                    checked={layer.isSelected || false}
+                    checked={layer.isSelected}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => updateLayer(idx, { isSelected: e.target.checked })}
                     className="w-3 h-3 accent-neon-green"
@@ -1658,7 +1666,7 @@ export default function App() {
                       <div className="space-y-2">
                         <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Text Content</span>
                         <textarea 
-                          value={layer.text || ''}
+                          value={layer.text}
                           onChange={(e) => updateLayer(idx, { text: e.target.value })}
                           className={`w-full border rounded px-2 py-1 text-[10px] focus:outline-none focus:border-neon-green resize-none min-h-[60px] ${isLightMode ? 'bg-black/5 border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
                           placeholder="Enter text... (Shift+Enter for new line)"
@@ -1677,7 +1685,7 @@ export default function App() {
                     <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Color</span>
                     <input 
                       type="color" 
-                      value={layer.color || '#000000'}
+                      value={layer.color}
                       onChange={(e) => updateLayer(idx, { color: e.target.value })}
                       className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                     />
@@ -1729,7 +1737,7 @@ export default function App() {
               {bgEnabled && (
                 <input 
                   type="color" 
-                  value={bgColor || '#333333'}
+                  value={bgColor}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                 />
@@ -2112,7 +2120,7 @@ function CompactSlider({ label, value, min, max, step = 0.1, onChange, isLightMo
     <div className="flex items-center gap-4">
       <span className={`text-[7px] w-8 tracking-widest ${isLightMode ? 'text-black' : 'text-white/10'}`}>{label}</span>
       <input 
-        type="range" min={min} max={max} step={step} value={value ?? 0}
+        type="range" min={min} max={max} step={step} value={value}
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className="flex-1"
       />
