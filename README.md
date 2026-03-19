@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="1200" alt="M-Cap Labs Banner" src="https://github.com/unix0x/M-CAP-/raw/main/m-cap-banner.png" />
+  <img width="1200" alt="M-Cap Labs Banner" src="[https://github.com/unix0x/M-CAP-/raw/main/m-cap-banner.png](https://raw.githubusercontent.com/unix0x/M-CAP-LABS/main/public/m-cap-banner.png)" />
 </div>
 # M-Cap Labs – Edit the Iconic Fast Food Punks M Cap
 
