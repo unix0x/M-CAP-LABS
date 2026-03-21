@@ -864,18 +864,18 @@ export default function App() {
 
         corners.forEach(corner => {
           ctx.beginPath();
-          ctx.arc(corner.x, corner.y, 12, 0, Math.PI * 2);
+          ctx.arc(corner.x, corner.y, 20, 0, Math.PI * 2);
           ctx.fill();
           ctx.stroke();
         });
         
         // Rotate handle
-        let handlePos = -h / 2 - 60;
-        if (layer.y + handlePos < 60) {
-          handlePos = h / 2 + 60;
+        let handlePos = -h / 2 - 80;
+        if (layer.y + handlePos < 80) {
+          handlePos = h / 2 + 80;
         }
-        if (layer.y + handlePos > 964) {
-          handlePos = -h / 2 - 60;
+        if (layer.y + handlePos > 944) {
+          handlePos = -h / 2 - 80;
         }
 
         ctx.beginPath();
@@ -883,7 +883,7 @@ export default function App() {
         ctx.lineTo(0, handlePos);
         ctx.stroke();
         ctx.beginPath();
-        ctx.arc(0, handlePos, 12, 0, Math.PI * 2);
+        ctx.arc(0, handlePos, 20, 0, Math.PI * 2);
         ctx.fill();
         ctx.stroke();
         
@@ -1059,7 +1059,7 @@ export default function App() {
         const rx = layer.x + corner.x * cos - corner.y * sin;
         const ry = layer.y + corner.x * sin + corner.y * cos;
         const dist = Math.sqrt((mouseX - rx) ** 2 + (mouseY - ry) ** 2);
-        if (dist < 40) {
+        if (dist < 60) {
           isResizing = true;
           break;
         }
@@ -1074,12 +1074,12 @@ export default function App() {
       }
       
       // Rotate handle
-      let handlePos = -h / 2 - 60;
-      if (layer.y + handlePos < 60) {
-        handlePos = h / 2 + 60;
+      let handlePos = -h / 2 - 80;
+      if (layer.y + handlePos < 80) {
+        handlePos = h / 2 + 80;
       }
-      if (layer.y + handlePos > 964) {
-        handlePos = -h / 2 - 60;
+      if (layer.y + handlePos > 944) {
+        handlePos = -h / 2 - 80;
       }
       
       const dist = Math.abs(handlePos);
@@ -1087,7 +1087,7 @@ export default function App() {
       const ty = layer.y + dist * (handlePos > 0 ? cos : -cos);
       const distRotate = Math.sqrt((mouseX - tx) ** 2 + (mouseY - ty) ** 2);
       
-      if (distRotate < 40) {
+      if (distRotate < 60) {
         setInteractionMode('rotate');
         setInitialMousePos({ x: mouseX, y: mouseY });
         setInitialLayerState({ ...layer });
@@ -1198,6 +1198,44 @@ export default function App() {
     setIsDragging(false);
     setInteractionMode(null);
     setInitialLayerState(null);
+  };
+
+  const handleCanvasTouchStart = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    const touch = e.touches[0];
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const mouseX = (touch.clientX - rect.left) * scaleX;
+    const mouseY = (touch.clientY - rect.top) * scaleY;
+
+    // Reuse mouse down logic by creating a fake mouse event
+    handleCanvasMouseDown({
+      clientX: touch.clientX,
+      clientY: touch.clientY,
+      preventDefault: () => {},
+      stopPropagation: () => {}
+    } as any);
+  };
+
+  const handleCanvasTouchMove = (e: React.TouchEvent<HTMLCanvasElement>) => {
+    if (!isDragging || activeLayerIdx === null) return;
+    const touch = e.touches[0];
+    
+    // Reuse mouse move logic
+    handleCanvasMouseMove({
+      clientX: touch.clientX,
+      clientY: touch.clientY
+    } as any);
+    
+    // Prevent scrolling while interacting with canvas
+    if (e.cancelable) e.preventDefault();
+  };
+
+  const handleCanvasTouchEnd = () => {
+    handleCanvasMouseUp();
   };
 
   const handleCanvasWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
@@ -1557,7 +1595,7 @@ export default function App() {
                             <div key={l.id} className="flex flex-col items-center gap-1">
                               <input 
                                 type="color" 
-                                value={l.color}
+                                value={l.color || '#000000'}
                                 onChange={(e) => {
                                   const idx = layers.findIndex(layer => layer.id === l.id);
                                   updateLayer(idx, { color: e.target.value });
@@ -1601,7 +1639,7 @@ export default function App() {
                 <div className="flex items-center gap-3">
                   <input 
                     type="checkbox" 
-                    checked={layer.isSelected}
+                    checked={!!layer.isSelected}
                     onClick={(e) => e.stopPropagation()}
                     onChange={(e) => updateLayer(idx, { isSelected: e.target.checked })}
                     className="w-3 h-3 accent-neon-green"
@@ -1666,7 +1704,7 @@ export default function App() {
                       <div className="space-y-2">
                         <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Text Content</span>
                         <textarea 
-                          value={layer.text}
+                          value={layer.text || ''}
                           onChange={(e) => updateLayer(idx, { text: e.target.value })}
                           className={`w-full border rounded px-2 py-1 text-[10px] focus:outline-none focus:border-neon-green resize-none min-h-[60px] ${isLightMode ? 'bg-black/5 border-black/10 text-black' : 'bg-black/40 border-white/10 text-white'}`}
                           placeholder="Enter text... (Shift+Enter for new line)"
@@ -1685,7 +1723,7 @@ export default function App() {
                     <span className={`text-[8px] tracking-widest uppercase ${isLightMode ? 'text-black' : 'text-white/20'}`}>Color</span>
                     <input 
                       type="color" 
-                      value={layer.color}
+                      value={layer.color || '#000000'}
                       onChange={(e) => updateLayer(idx, { color: e.target.value })}
                       className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                     />
@@ -1737,7 +1775,7 @@ export default function App() {
               {bgEnabled && (
                 <input 
                   type="color" 
-                  value={bgColor}
+                  value={bgColor || '#000000'}
                   onChange={(e) => setBgColor(e.target.value)}
                   className="w-6 h-6 bg-transparent border-none cursor-pointer rounded-full overflow-hidden"
                 />
@@ -1950,8 +1988,11 @@ export default function App() {
               onMouseMove={handleCanvasMouseMove}
               onMouseUp={handleCanvasMouseUp}
               onMouseLeave={handleCanvasMouseUp}
+              onTouchStart={handleCanvasTouchStart}
+              onTouchMove={handleCanvasTouchMove}
+              onTouchEnd={handleCanvasTouchEnd}
               onWheel={handleCanvasWheel}
-              className={`w-full max-w-[340px] lg:max-w-[512px] aspect-square transition-all duration-500 group-hover:shadow-[0_0_50px_rgba(57,255,20,0.1)] ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'} ${mode === 'memes' && !memeImage ? 'hidden' : 'block'}`}
+              className={`w-full max-w-[340px] lg:max-w-[512px] aspect-square transition-all duration-500 group-hover:shadow-[0_0_50px_rgba(57,255,20,0.1)] ${isDragging ? 'cursor-grabbing' : 'cursor-crosshair'} ${mode === 'memes' && !memeImage ? 'hidden' : 'block'} touch-none`}
             />
 
             {/* In-canvas controls for active layer (Cap only) */}
@@ -1979,10 +2020,10 @@ export default function App() {
                         setLayers(layers.map((l, i) => i === activeLayerIdx ? { ...l, flipX: !l.flipX } : l));
                       }
                     }}
-                    className="p-2 rounded-full hover:bg-white/10 text-white transition-colors"
+                    className="p-3 rounded-full hover:bg-white/10 text-white transition-colors"
                     title="Flip Layer"
                   >
-                    <FlipHorizontal size={14} />
+                    <FlipHorizontal size={18} />
                   </button>
                   <button 
                     onClick={() => {
@@ -1994,10 +2035,10 @@ export default function App() {
                       }
                       setActiveLayerIdx(null);
                     }}
-                    className="p-2 rounded-full hover:bg-red-500/20 text-red-500 transition-colors"
+                    className="p-3 rounded-full hover:bg-red-500/20 text-red-500 transition-colors"
                     title="Delete Layer"
                   >
-                    <Trash2 size={14} />
+                    <Trash2 size={18} />
                   </button>
                 </div>
               </div>
@@ -2120,7 +2161,7 @@ function CompactSlider({ label, value, min, max, step = 0.1, onChange, isLightMo
     <div className="flex items-center gap-4">
       <span className={`text-[7px] w-8 tracking-widest ${isLightMode ? 'text-black' : 'text-white/10'}`}>{label}</span>
       <input 
-        type="range" min={min} max={max} step={step} value={value}
+        type="range" min={min} max={max} step={step} value={value ?? 0}
         onChange={(e) => onChange(parseFloat(e.target.value))}
         className="flex-1"
       />
